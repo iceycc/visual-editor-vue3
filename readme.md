@@ -1,3 +1,7 @@
+## 版本计划，通过可视化拖拽项目学习不同的框架
+- [ ] vue3版本
+- [ ] react版本
+- [ ] ~~angular~~
 ## 目标
 主要流程（中途可能会补充或者调整顺序）
 
@@ -25,11 +29,11 @@
 
 ## 技能要求
 
-本次可视化拖拽组件没有用额外的拖拽库。比如Vue中仅使用了ElementPlus，React仅使用了Ant Design，其他所有功能要求同学跟着视频手写。视频中不会讲解太多基础知识，所以要求同学们基本一定的相关知识技能；
+可视化拖拽组件没有用额外的拖拽库。比如Vue中仅使用了ElementPlus，React仅使用了Ant Design，其他所有功能要求手写。需要一些基本的相关知识技能；
 
 > 通用技能
 
-- 能够熟练使用Typescript，本次Vue3.0以及React版本的训练会全部使用Typescript开发，并且不会讲解Typescript的基础知识点；
+- 能够熟练使用Typescript，本次Vue3.0以及React版本会全部使用Typescript开发，并且不会讲解Typescript的基础知识点；
 - 熟练使用css预处理语言，本次以Sass为主（当然喜欢使用Less或者Stylus的同学可以使用自己擅长的语言，本次仅使用了Sass的一些基础语法）；
 - 熟练使用js操作dom，比如通过js读取dom的位置信息，通过js修改dom的位置信息。了解js的事件冒泡、事件捕获机制以及 mouse 事件与 drag事件的区别以及用法。
 
@@ -50,10 +54,10 @@
 - [React官方文档](https://react.docschina.org/docs/hello-world.html)
 - [React Hook官方文档](https://react.docschina.org/docs/hooks-intro.html)
 - [Vue3.0官方文档（中文）](https://v3.cn.vuejs.org/guide/introduction.html)
-- [Vue3.0文档（中文）](http://martsforever-snapshot.gitee.io/vue-docs-next-zh-cn/)：我在码云上同步过来的中文文档，不用翻墙，访问快很多；
+- [Vue3.0文档（中文）](http://martsforever-snapshot.gitee.io/vue-docs-next-zh-cn/)：码云上同步过来的中文文档，不用翻墙，访问快很多；
 - [渲染函数：官方文档](https://v3.vuejs.org/guide/render-function.html#jsx)
 - [渲染函数：jsx-next github](https://github.com/vuejs/jsx-next#installation)
 - [Composition API](http://martsforever-snapshot.gitee.io/vue-docs-next-zh-cn/guide/composition-api-introduction.html)：在Vue3.0文档中一样可以找到，这里给出直接访问地址。
-- [Typescript Deep Dive](http://martsforever-snapshot.gitee.io/typescript-book-chinese/)：我在码云上同步过来的 `Typescript Deep Dive`一书的中文文档，不用翻墙访问很快；
+- [Typescript Deep Dive](http://martsforever-snapshot.gitee.io/typescript-book-chinese/)：码云上同步过来的 `Typescript Deep Dive`一书的中文文档，不用翻墙访问很快；
 - [@vue/cli Vue官方脚手架](https://cli.vuejs.org/zh/)：官方推荐的用于创建Vue工程脚手架工具
 - [Vite](https://www.npmjs.com/package/vite)：尤雨溪大佬新出的，旨在替代webpack-dev的开发工具，本次的React版本就是用vite搭建的，在全引入antd的情况下可以秒速启动（第一次慢一点）并且自带React热更新的功能；Vue版本因为ElementPlus安装有问题，暂时无法使用；
