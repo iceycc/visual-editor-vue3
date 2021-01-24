@@ -2,6 +2,12 @@
 - [ ] vue3版本
 - [ ] react版本
 - [ ] ~~angular~~
+
+## 项目成果预览
+- 内容视频介绍：[https://www.bilibili.com/video/BV1BK4y1W7Eu/](https://www.bilibili.com/video/BV1BK4y1W7Eu/)
+- Vue版本项目预览：[http://martsforever-pot.gitee.io/vue-visual-editor/](http://martsforever-pot.gitee.io/vue-visual-editor/)
+- React版本项目预览：[http://martsforever-pot.gitee.io/react-visual-editor/](http://martsforever-pot.gitee.io/react-visual-editor/)
+
 ## 目标
 主要流程（中途可能会补充或者调整顺序）
 
