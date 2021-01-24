@@ -1,6 +1,12 @@
 import {defineComponent, PropType, computed, ref} from 'vue'
 import './visual-editor.scss'
-import {VisualEditorModelValue, VisualEditorConfig, VisualEditorComponent, createNewBlock} from './visual-editor.utils'
+import {
+    VisualEditorModelValue,
+    VisualEditorConfig,
+    VisualEditorComponent,
+    createNewBlock,
+    VisualEditorBlockData
+} from './visual-editor.utils'
 import {VisualEditorBlock} from './visual-editor-block'
 import {useModel} from './utils/useModule'
 
@@ -28,6 +34,16 @@ export const VisualEditor = defineComponent({
         }))
         //
         const containerRef = ref({} as HTMLElement)
+        const methods = {
+            clearFocus: (block?: VisualEditorBlockData) => {
+                let blocks = (dataModel.value.blocks || []);
+                if (blocks.length === 0) return
+                if (!!block) {
+                    blocks = blocks.filter(item => item !== block)
+                }
+                blocks.forEach(block => block.focus = false)
+            }
+        }
         /*处理从菜单拖拽组件到容器的相关动作*/
         const menuDraggier = (() => {
             // 用闭包自执行函数，只暴露需要的方法
@@ -100,6 +116,30 @@ export const VisualEditor = defineComponent({
             }
             return blockHandler
         })()
+        const focusHandle = (() => {
+            return {
+                container: {
+                    onMousedown(e: MouseEvent) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        methods.clearFocus();
+                    }
+                },
+                block: {
+                    onMouseDown(e: MouseEvent, block: VisualEditorBlockData) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (e.shiftKey) {
+                            block.focus = !block.focus;
+                        } else {
+                            block.focus = true;
+                            methods.clearFocus(block);
+                        }
+
+                    }
+                }
+            }
+        })()
         // mouse事件，在移动的时候可以监听鼠标滚轮事件，比较方便
         return () => <div class="visual-editor">
             <div class="visual-editor-menu">
@@ -123,9 +163,23 @@ export const VisualEditor = defineComponent({
             </div>
             <div class="visual-editor-body">
                 <div class="visual-editor-content">
-                    <div class="visual-editor-container" ref={containerRef} style={containerStyles.value}>
+                    <div class="visual-editor-container"
+                         ref={containerRef}
+                         style={containerStyles.value}
+                         {...focusHandle.container}
+                    >
+                        {/*vue3的话会将事件自动代理到组件根节点*/}
                         {!!dataModel.value && dataModel.value.blocks.map((block, ind) => {
-                            return <VisualEditorBlock config={props.config} block={block} key={ind}/>;
+                            return <VisualEditorBlock
+                                config={props.config}
+                                block={block}
+                                key={ind}
+                                {...{
+                                    onMouseDown: (e: MouseEvent) => {
+                                        focusHandle.block.onMouseDown(e, block)
+                                    }
+                                }}
+                            />;
                         })}
                     </div>
 

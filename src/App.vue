@@ -30,9 +30,14 @@ export default defineComponent({
             componentKey: 'button'
           },
           {
-            top: 200,
+            top: 100,
             left: 200,
             componentKey: 'input'
+          },
+          {
+            top: 200,
+            left: 200,
+            componentKey: 'text'
           },
         ]
       }
