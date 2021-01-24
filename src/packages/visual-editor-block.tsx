@@ -1,5 +1,5 @@
 import {defineComponent, PropType, computed} from 'vue';
-import {VisualEditorBlockData} from './visual-editor-utils';
+import {VisualEditorBlockData} from './visual-editor.utils';
 
 export const VisualEditorBlock = defineComponent({
     props: {

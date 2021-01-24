@@ -38,6 +38,46 @@ $primary: #409EFF; // 主色调
     bottom: 0;
     background-color: white;
     z-index: 9;
+
+    & > .visual-editor-menu-item {
+      position: relative;
+      width: calc(100% - 20px);
+      margin-left: 10px;
+      border: solid 3px $ibl;
+      margin-top: 20px;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0px 20px;
+      box-sizing: border-box;
+
+      &:after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        content: '';
+        z-index: 2;
+      }
+
+      &:hover {
+        border-color: $primary;
+        cursor: move;
+      }
+    }
+
+    .visual-editor-menu-item-label {
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      background-color: $primary;
+      color: white;
+      padding: 4px 8px;
+      font-size: 12px;
+      z-index: 1;
+    }
   }
 
   & > .visual-editor-head {
