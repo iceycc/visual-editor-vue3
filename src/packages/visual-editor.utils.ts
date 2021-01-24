@@ -3,6 +3,17 @@ export interface VisualEditorBlockData {
     top: number, // 组件的top定位
     left: number, // 组件的left定位
     adjustPosition?: boolean, // 是否需要调整位置
+    focus?: boolean, //
+}
+
+export function createNewBlock({top, left, component}: { top: number, left: number, component: VisualEditorComponent }): VisualEditorBlockData {
+    return {
+        top,
+        left,
+        componentKey: component!.key,
+        adjustPosition: true,
+        focus: true
+    }
 }
 
 export interface VisualEditorModelValue {

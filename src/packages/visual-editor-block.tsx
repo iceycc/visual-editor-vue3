@@ -14,6 +14,12 @@ export const VisualEditorBlock = defineComponent({
                 left: `${props.block.left}px`
             }
         ))
+        const classes = computed(() => [
+            'visual-editor-block',
+            {
+                'visual-editor-block-focus': props.block.focus
+            }
+        ])
         onMounted(() => {
             /// 添加组件的时候，自动按照鼠标位置调整上线左右居中
             const block = props.block
@@ -28,7 +34,7 @@ export const VisualEditorBlock = defineComponent({
         return () => {
             const component = props.config.componentMap[props.block.componentKey]
             const render = component.render()
-            return <div style={styles.value} class="visual-editor-block" ref={el}>
+            return <div style={styles.value} class={classes.value} ref={el}>
                 {render}
             </div>
         }

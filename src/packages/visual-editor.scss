@@ -121,8 +121,23 @@ $primary: #409EFF; // 主色调
         flex-grow: 0;
         position: relative;
 
-        & .visual-editor-block {
+        .visual-editor-block {
           position: absolute;
+
+          &:after {
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            content: ''
+          }
+
+          &.visual-editor-block-focus {
+            &:after {
+              border: dashed 1px $primary
+            }
+          }
         }
       }
     }

@@ -1,6 +1,6 @@
 import {defineComponent, PropType, computed, ref} from 'vue'
 import './visual-editor.scss'
-import {VisualEditorModelValue, VisualEditorConfig, VisualEditorComponent} from './visual-editor.utils'
+import {VisualEditorModelValue, VisualEditorConfig, VisualEditorComponent, createNewBlock} from './visual-editor.utils'
 import {VisualEditorBlock} from './visual-editor-block'
 import {useModel} from './utils/useModule'
 
@@ -86,12 +86,12 @@ export const VisualEditor = defineComponent({
                  */
                 drop: (e: DragEvent) => {
                     const value = dataModel.value.blocks || []
-                    value.push({
+                    value.push(createNewBlock({
                         top: e.offsetY,
                         left: e.offsetX,
-                        componentKey: component!.key,
-                        adjustPosition: true
-                    })
+                        component: component!
+                    }))
+
                     dataModel.value = {
                         ...dataModel.value,
                         blocks: value
@@ -100,6 +100,7 @@ export const VisualEditor = defineComponent({
             }
             return blockHandler
         })()
+        // mouse事件，在移动的时候可以监听鼠标滚轮事件，比较方便
         return () => <div class="visual-editor">
             <div class="visual-editor-menu">
                 {!!props.config && props.config.componentList.map(component => {
