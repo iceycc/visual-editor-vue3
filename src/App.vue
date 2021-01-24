@@ -1,7 +1,7 @@
 <template>
 <div class="app">
   <h1>这是内容页面</h1>
-  <VisualEditor/>
+  <VisualEditor v-model="modelValue"/>
 </div>
 </template>
 
@@ -11,7 +11,27 @@ import {VisualEditor} from './packages/visual-editor'
 export default defineComponent({
   name: 'App',
   components: {
-    VisualEditor
+    VisualEditor,
+  },
+  data() {
+    return {
+      modelValue: {
+        container: {
+          width: 500,
+          height: 800
+        },
+        blocks: [
+          {
+            top: 10,
+            left: 10
+          },
+          {
+            top: 200,
+            left: 200
+          },
+        ]
+      }
+    }
   }
 });
 </script>

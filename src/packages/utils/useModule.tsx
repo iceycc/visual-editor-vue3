@@ -1,5 +1,4 @@
-import {ref, computed, watch, defineComponent} from 'vue';
-import defineProperty = Reflect.defineProperty;
+import {ref, watch} from 'vue';
 
 // 自定义双向绑定
 export function useModel<T>(getter: () => T, emitter: (val: T) => void) {
