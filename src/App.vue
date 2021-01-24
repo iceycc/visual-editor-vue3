@@ -26,11 +26,13 @@ export default defineComponent({
         blocks: [
           {
             top: 10,
-            left: 10
+            left: 10,
+            componentKey: 'button'
           },
           {
             top: 200,
-            left: 200
+            left: 200,
+            componentKey: 'input'
           },
         ]
       }

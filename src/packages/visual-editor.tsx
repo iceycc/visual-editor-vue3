@@ -39,7 +39,7 @@ export const VisualEditor = defineComponent({
                  * @param current
                  */
                 dragstart: (e: DragEvent, current: VisualEditorComponent) => {
-                    console.log('dragstart')
+                    console.log('current', current)
                     containerRef.value.addEventListener('dragenter', containerHandle.dragenter)
                     containerRef.value.addEventListener('dragover', containerHandle.dragover)
                     containerRef.value.addEventListener('dragleave', containerHandle.dragleave)
@@ -88,7 +88,8 @@ export const VisualEditor = defineComponent({
                     const value = dataModel.value.blocks || []
                     value.push({
                         top: e.offsetY,
-                        left: e.offsetX
+                        left: e.offsetX,
+                        componentKey: component!.key
                     })
                     dataModel.value = {
                         ...dataModel.value,
@@ -98,8 +99,6 @@ export const VisualEditor = defineComponent({
             }
             return blockHandler
         })()
-        console.log('modelValue', dataModel)
-        console.log('config', props.config)
         return () => <div class="visual-editor">
             <div class="visual-editor-menu">
                 {!!props.config && props.config.componentList.map(component => {
@@ -124,7 +123,7 @@ export const VisualEditor = defineComponent({
                 <div class="visual-editor-content">
                     <div class="visual-editor-container" ref={containerRef} style={containerStyles.value}>
                         {!!dataModel.value && dataModel.value.blocks.map((block, ind) => {
-                            return <VisualEditorBlock block={block} key={ind}/>;
+                            return <VisualEditorBlock config={props.config} block={block} key={ind}/>;
                         })}
                     </div>
 

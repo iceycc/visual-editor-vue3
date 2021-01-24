@@ -1,4 +1,5 @@
 export interface VisualEditorBlockData {
+    componentKey: string,
     top: number,
     left: number
 }
@@ -12,9 +13,8 @@ export interface VisualEditorModelValue {
 }
 
 export interface VisualEditorComponent {
-    name: string,
+    key: string,
     label: string,
-
     preview: () => JSX.Element,
     render: () => JSX.Element
 }
@@ -27,7 +27,7 @@ export function createVisualEditorConfig() {
         componentMap,
         registry: (key: string, component: Omit<VisualEditorComponent, 'key'>) => {
             let comp = {...component, key}
-            componentList.push(component)
+            componentList.push(comp)
             componentMap[key] = comp
         }
     }
@@ -39,5 +39,6 @@ export type VisualEditorConfig = ReturnType<typeof createVisualEditorConfig>
 // const config = createVisualEditorConfig()
 // config.registry('input', {
 //     preview: () => '输出框1',
-//     render: () => '输出框1'
+//     render: () => '输出框1',
+//     label: '',
 // })
