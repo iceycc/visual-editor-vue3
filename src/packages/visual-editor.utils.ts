@@ -1,7 +1,8 @@
 export interface VisualEditorBlockData {
-    componentKey: string,
-    top: number,
-    left: number
+    componentKey: string, //  映射VisualEditorConfig 中 componentMap的 component对象
+    top: number, // 组件的top定位
+    left: number, // 组件的left定位
+    adjustPosition?: boolean, // 是否需要调整位置
 }
 
 export interface VisualEditorModelValue {

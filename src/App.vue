@@ -20,8 +20,8 @@ export default defineComponent({
       visualConfig,
       modelValue: {
         container: {
-          width: 500,
-          height: 800
+          width: 800,
+          height: 500
         },
         blocks: [
           {

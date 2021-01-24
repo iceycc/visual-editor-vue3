@@ -1,9 +1,13 @@
+## vue3版本可视化拖拽项目
+vue3 + ts + element-plus
+
 ## 版本计划，通过可视化拖拽项目学习不同的框架
 - [ ] vue3版本
 - [ ] react版本
 - [ ] ~~angular~~
 
 ## 项目成果预览
+- 项目来自《珠峰架构》可视化拖拽训练营，详情请私聊。
 - 内容视频介绍：[https://www.bilibili.com/video/BV1BK4y1W7Eu/](https://www.bilibili.com/video/BV1BK4y1W7Eu/)
 - Vue版本项目预览：[http://martsforever-pot.gitee.io/vue-visual-editor/](http://martsforever-pot.gitee.io/vue-visual-editor/)
 - React版本项目预览：[http://martsforever-pot.gitee.io/react-visual-editor/](http://martsforever-pot.gitee.io/react-visual-editor/)
@@ -12,7 +16,7 @@
 主要流程（中途可能会补充或者调整顺序）
 
 - [x] 主页面结构：左侧可选组件列表、中间容器画布、右侧编辑组件定义好的属性
-- [ ] 从菜单拖拽组件到容器；
+- [x] 从菜单拖拽组件到容器；
 - [ ] Block的选中状态；
 - [ ] 容器内的组件可以拖拽移动位置；
 - [ ] 命令队列以及对应的快捷键；
