@@ -12,7 +12,7 @@ export function createNewBlock({top, left, component}: { top: number, left: numb
         left,
         componentKey: component!.key,
         adjustPosition: true,
-        focus: true
+        focus: false
     }
 }
 

@@ -25,15 +25,26 @@ export const VisualEditor = defineComponent({
         'update:modelValue': ((val?: VisualEditorModelValue) => true)
     },
     setup(props, ctx) {
-        // 组件对外数据双向绑定
+        // 容器中过的组件数据
         const dataModel = useModel(() => props.modelValue, (val) => ctx.emit('update:modelValue', val))
-        // 容器样式
+        // container阶段的dom对象的引用
+        const containerRef = ref({} as HTMLElement)
+        // container节点的style样式对象
         const containerStyles = computed(() => ({
             width: `${dataModel.value.container.width}px`,
             height: `${dataModel.value.container.height}px`,
         }))
-        //
-        const containerRef = ref({} as HTMLElement)
+        // 计算寻中与未选中的block的事件
+        const focusData = computed(() => {
+            let focus: VisualEditorBlockData[] = [];
+            let unFocus: VisualEditorBlockData[] = [];
+            (dataModel.value.blocks || []).forEach(block => (block.focus ? focus : unFocus).push(block));
+            return {
+                focus,
+                unFocus
+            }
+        })
+        // 对外暴露的一些方法
         const methods = {
             clearFocus: (block?: VisualEditorBlockData) => {
                 let blocks = (dataModel.value.blocks || []);
@@ -115,13 +126,15 @@ export const VisualEditor = defineComponent({
                 }
             }
             return blockHandler
-        })()
+        })();
+        // 处理block选中事件
         const focusHandle = (() => {
             return {
                 container: {
                     onMousedown(e: MouseEvent) {
                         e.preventDefault();
                         e.stopPropagation();
+                        // 点击空白清空所有block
                         methods.clearFocus();
                     }
                 },
@@ -129,15 +142,55 @@ export const VisualEditor = defineComponent({
                     onMouseDown(e: MouseEvent, block: VisualEditorBlockData) {
                         e.preventDefault();
                         e.stopPropagation();
-                        if (e.shiftKey) {
-                            block.focus = !block.focus;
+                        // 重点逻辑
+                        if (e.shiftKey) { // 按住shift，会将当前点击的block的focus进行取反
+                            if (focusData.value.focus.length <= 1) {
+                                // 如果只有一个，按住shift，不会取消。未来以后shift只能横向纵向移动
+                                block.focus = true
+                            } else {
+                                block.focus = !block.focus;
+                            }
                         } else {
-                            block.focus = true;
-                            methods.clearFocus(block);
+                            if (!block.focus) { // 没有shift，切当前没有选中的，会选中当前，清空其他
+                                block.focus = true;
+                                methods.clearFocus(block);
+                            }
                         }
-
+                        blockDraggier.mousedown(e)
                     }
                 }
+            }
+        })();
+        // 处理block在container中拖拽移动事件
+        const blockDraggier = (() => {
+            let dragState = {
+                startX: 0,
+                startY: 0,
+                startPos: [] as { left: number, top: number }[]
+            }
+            const mousedown = (e: MouseEvent) => {
+                dragState = {
+                    startX: e.clientX,
+                    startY: e.clientY,
+                    startPos: focusData.value.focus.map(({top, left}) => ({top, left}))
+                }
+                document.addEventListener('mousemove', mousemove)
+                document.addEventListener('mouseup', mouseup)
+            }
+            const mousemove = (e: MouseEvent) => {
+                const durX = e.clientX - dragState.startX
+                const durY = e.clientY - dragState.startY
+                focusData.value.focus.forEach((block, index) => {
+                    block.top = dragState.startPos[index].top + durY
+                    block.left = dragState.startPos[index].left + durX
+                })
+            }
+            const mouseup = () => {
+                document.removeEventListener('mousemove', mousemove)
+                document.removeEventListener('mouseup', mouseup)
+            }
+            return {
+                mousedown
             }
         })()
         // mouse事件，在移动的时候可以监听鼠标滚轮事件，比较方便

@@ -125,11 +125,12 @@ $primary: #409EFF; // 主色调
           position: absolute;
 
           &:after {
+            $space: 3px;
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
+            top: -$space;
+            left: -$space;
+            right: -$space;
+            bottom: -$space;
             content: ''
           }
 
