@@ -55,7 +55,7 @@ export const VisualEditor = defineComponent({
                 blocks.forEach(block => block.focus = false)
             }
         }
-        /*处理从菜单拖拽组件到容器的相关动作*/
+        //处理从菜单拖拽组件到容器的相关动作
         const menuDraggier = (() => {
             // 用闭包自执行函数，只暴露需要的方法
             let component = null as null | VisualEditorComponent
