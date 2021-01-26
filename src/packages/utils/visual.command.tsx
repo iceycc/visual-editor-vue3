@@ -19,6 +19,9 @@ export function useVisualCommand(
         dragStart: { on: (cb: () => void) => void, off: (cb: () => void) => void }
     }) {
     const commander = useCommander()
+    /**
+     * 删除命令
+     */
     commander.registry({
         name: 'delete',
         keyboard: ['backspace', 'delete'],

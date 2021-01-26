@@ -23,13 +23,17 @@ export interface CommandManager {
 
 export function useCommander() {
     const state = reactive({
-        current: -1,
-        queue: [] as CommandExecute[], // 执行命令的队列
-        commandArray: [] as Command[],
-        commands: {} as Record<commandTypes, (...args: any[]) => void>,
-        destroyList: [] as (() => void | undefined)[],
+        current: -1, // 队列中当前的命令
+        queue: [] as CommandExecute[], // 命令队列
+        commandArray: [] as Command[], // 命令对象数组
+        commands: {} as Record<commandTypes, (...args: any[]) => void>, //  命令对象，方便通过命令的名称调用命令的execute函数，并且执行额外的命令队列的逻辑
+        destroyList: [] as (() => void | undefined)[], // 组件销毁的时候，需要调用的销毁逻辑数组
 
     })
+    /**
+     * 注册一个命令
+     * @param command
+     */
     const registry = (command: Command) => {
         state.commandArray.push(command)
         state.commands[command.name] = (...args) => {
@@ -46,7 +50,10 @@ export function useCommander() {
             }
         }
     }
-    // 初始化函数，负责初始化键盘监听事件，调用命令的初始化逻辑
+
+    /**
+     * 初始化函数，负责初始化键盘监听事件，调用命令的初始化逻辑
+     */
     const init = () => {
         const onKeydown = (e: KeyboardEvent) => {
             // console.log('监听到键盘事件', e)
@@ -56,6 +63,9 @@ export function useCommander() {
         state.destroyList.push(() => window.removeEventListener('keydown', onKeydown))
 
     }
+    /**
+     * 注册撤回命令（撤回命令执行结果不需要进入命令队列）
+     */
     registry({
         name: 'undo',
         keyboard: 'ctrl+z',
@@ -80,6 +90,9 @@ export function useCommander() {
         }
     })
 
+    /**
+     * 注册重做命令（重做命令执行结果不需要进入命令队列）
+     */
     registry({
         name: 'redo',
         keyboard: ['ctrl+y', 'ctrl+shift+y'],
