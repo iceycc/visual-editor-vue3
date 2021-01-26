@@ -105,7 +105,7 @@ export function useVisualCommand(
                 before: null as null | VisualEditorBlockData[]
             }
             const handler = {
-                dragStart: () => this.data.before = deepcopy(dataModel.value.blocks),
+                dragStart: () => this.data.before = deepcopy(dataModel.value.blocks || []),
                 dragEnd: () => commander.state.commands.drag()
             }
             dragStart.on(handler.dragStart)
