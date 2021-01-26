@@ -66,11 +66,12 @@ export function useCommander() {
                 redo: () => {
                     console.log('执行撤销undo', state)
                     // 将要做的事情还原
-                    let {current} = state;
-                    if (current === -1) return;
-                    const {undo} = state.queue[current];
-                    !!undo && undo();
-                    state.current -= 1
+                    if (state.current === -1) return;
+                    const queueItem = state.queue[state.current]
+                    if (!!queueItem) {
+                        !!queueItem.undo && queueItem.undo()
+                        state.current--
+                    }
                 },
                 // undo: () => {
                 //     // 重新做一遍，要做的事情
@@ -87,11 +88,10 @@ export function useCommander() {
             return {
                 redo: () => {
                     console.log('执行重做redo', state)
-                    let {current} = state
-                    const queueItem = state.queue[current + 1] // 重做下一指针的操作
+                    const queueItem = state.queue[state.current + 1] // 重做下一指针的操作
                     if (!!queueItem) {
                         queueItem.redo()
-                        state.current += 1
+                        state.current++
                     }
                 }
 

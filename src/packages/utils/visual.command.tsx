@@ -36,11 +36,11 @@ export function useVisualCommand(
                     // data.before = dataModel.value.blocks || [];
                     // const {unFocus} = focusData.value; //
                     // data.after = unFocus
-                    updateBlocks(data.after) // 将新的未选中的更新，相当于选中的删除了
+                    updateBlocks(deepcopy(data.after)) // 将新的未选中的更新，相当于选中的删除了
                 },
                 undo() {
                     console.log('撤回删除命令')
-                    updateBlocks(data.before) //
+                    updateBlocks(deepcopy(data.before)) //
                 }
             }
         }
@@ -67,12 +67,12 @@ export function useVisualCommand(
             }
             return {
                 redo() {
-                    updateBlocks(data.after)
+                    updateBlocks(deepcopy(data.after))
                     console.log('重做添加命令')
                 },
                 undo() {
                     console.log('撤销添加命令')
-                    updateBlocks(data.before)
+                    updateBlocks(deepcopy(data.before))
                 }
             }
         }
@@ -90,17 +90,26 @@ export function useVisualCommand(
             }
         }
     })
-
+    /**
+     * 拖拽命令，适用于三种情况：
+     * - 从菜单拖拽组件到容器画布；
+     * - 在容器中拖拽组件调整位置
+     * - 拖拽调整组件的宽度和高度；
+     */
     commander.registry({
         name: 'drag',
+        followQueue: true,
         init() {
+            console.log('command drag init')
             this.data = {
                 before: null as null | VisualEditorBlockData[]
             }
             const handler = {
-                dragStart: () => this.data.before = dataModel.value.blocks || [],
+                dragStart: () => this.data.before = deepcopy(dataModel.value.blocks),
                 dragEnd: () => commander.state.commands.drag()
             }
+            dragStart.on(handler.dragStart)
+            dragEnd.on(handler.dragEnd)
             return () => {
                 dragStart.off(handler.dragStart)
                 dragEnd.off(handler.dragEnd)
@@ -108,13 +117,16 @@ export function useVisualCommand(
         },
         execute() {
             let before = deepcopy(this.data.before)
-            let after = deepcopy(dataModel.value.blocks || [])
+            let after = deepcopy(dataModel.value.blocks)
+            console.log('command drag')
             return {
                 redo: () => {
                     updateBlocks(after)
+                    console.log('command drag redo')
                 },
                 undo: () => {
                     updateBlocks(before)
+                    console.log('command drag undo')
                 }
             }
         }
@@ -125,6 +137,7 @@ export function useVisualCommand(
     return {
         undo: () => commander.state.commands.undo(),
         redo: () => commander.state.commands.redo(),
-        delete: () => commander.state.commands.delete()
+        delete: () => commander.state.commands.delete(),
+        drag: () => commander.state.commands.drag()
     }
 }
