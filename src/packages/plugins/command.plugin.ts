@@ -5,7 +5,7 @@ export interface CommandExecute {
     redo: () => void,
 }
 
-type commandTypes = 'delete' | 'undo' | 'redo'
+type commandTypes = 'delete' | 'undo' | 'redo' | 'updateBlocks'
 
 export interface Command {
     name: commandTypes, // 命令唯一标志
@@ -28,11 +28,16 @@ export function useCommander() {
     const registry = (command: Command) => {
         state.commands[command.name] = (...args) => {
             const {undo, redo} = command.execute(...args)
-            if (command.followQueue) {
-                state.queue.push({undo, redo})
-                state.current += 1
-            }
             redo() // 执行命令时直接执行redo，重做命令
+            if (command.followQueue) {
+                let {queue, current} = state
+                if (queue.length > 0) {
+                    queue = queue.slice(0, current + 1)
+                    state.queue = queue
+                }
+                queue.push({undo, redo}) // 增加命令队列
+                state.current = current + 1 // +1
+            }
         }
     }
     registry({

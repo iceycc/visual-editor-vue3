@@ -35,6 +35,19 @@ export function useVisualCommand({focusData, dataModel, updateBlocks}: {
             }
         }
     })
+
+    // 添加命令
+    commander.registry({
+        name: 'updateBlocks',
+        execute: (blocks: VisualEditorBlockData[]) => {
+            console.log('添加命令')
+            return {
+                redo() {
+                    console.log('重做添加命令')
+                }
+            }
+        }
+    })
     return {
         undo: () => commander.state.commands.undo(),
         redo: () => commander.state.commands.redo(),
