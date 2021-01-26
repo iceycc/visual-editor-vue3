@@ -78,7 +78,7 @@ export const VisualEditor = defineComponent({
                  * @param current
                  */
                 dragstart: (e: DragEvent, current: VisualEditorComponent) => {
-                    console.log('current', current)
+                    // console.log('current', current)
                     containerRef.value.addEventListener('dragenter', containerHandle.dragenter)
                     containerRef.value.addEventListener('dragover', containerHandle.dragover)
                     containerRef.value.addEventListener('dragleave', containerHandle.dragleave)

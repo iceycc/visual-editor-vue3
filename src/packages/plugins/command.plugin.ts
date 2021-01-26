@@ -49,7 +49,7 @@ export function useCommander() {
     // 初始化函数，负责初始化键盘监听事件，调用命令的初始化逻辑
     const init = () => {
         const onKeydown = (e: KeyboardEvent) => {
-            console.log('监听到键盘事件', e)
+            // console.log('监听到键盘事件', e)
         }
         window.addEventListener('keydown', onKeydown)
         state.commandArray.forEach(command => !!command.init && state.destroyList.push(command.init()))
@@ -64,7 +64,7 @@ export function useCommander() {
             // 命令执行的时候，需要做的事情
             return {
                 redo: () => {
-                    console.log('执行撤销undo', state)
+                    // console.log('执行撤销undo', state)
                     // 将要做的事情还原
                     if (state.current === -1) return;
                     const queueItem = state.queue[state.current]
@@ -87,7 +87,7 @@ export function useCommander() {
         execute: () => {
             return {
                 redo: () => {
-                    console.log('执行重做redo', state)
+                    // console.log('执行重做redo', state)
                     const queueItem = state.queue[state.current + 1] // 重做下一指针的操作
                     if (!!queueItem) {
                         queueItem.redo()
