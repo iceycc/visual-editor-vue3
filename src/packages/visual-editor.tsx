@@ -10,6 +10,7 @@ import {
 import {VisualEditorBlock} from './visual-editor-block'
 import {useModel} from './utils/useModule'
 import {useVisualCommand} from './utils/visual.command'
+import {createEvent} from './plugins/event'
 
 export const VisualEditor = defineComponent({
     props: {
@@ -45,6 +46,16 @@ export const VisualEditor = defineComponent({
                 unFocus
             }
         })
+
+        //
+        const dragStart = createEvent()
+        const dragEnd = createEvent()
+        // dragStart.on(() => {
+        //     console.log('listen drag start')
+        // })
+        // dragEnd.on(() => {
+        //     console.log('listen drag end')
+        // })
         // 对外暴露的一些方法
         const methods = {
             clearFocus: (block?: VisualEditorBlockData) => {
@@ -76,6 +87,7 @@ export const VisualEditor = defineComponent({
                     containerRef.value.addEventListener('dragleave', containerHandle.dragleave)
                     containerRef.value.addEventListener('drop', containerHandle.drop)
                     component = current
+                    dragStart.emit()
                 },
                 /**
                  * 处理拖拽菜单组件结束动作
@@ -87,6 +99,7 @@ export const VisualEditor = defineComponent({
                     containerRef.value.removeEventListener('dragleave', containerHandle.dragleave)
                     containerRef.value.removeEventListener('drop', containerHandle.drop)
                     component = null
+                    dragEnd.emit()
                 },
             }
             const containerHandle = {
@@ -116,17 +129,17 @@ export const VisualEditor = defineComponent({
                  * @param e
                  */
                 drop: (e: DragEvent) => {
-                    const value = dataModel.value.blocks || []
-                    value.push(createNewBlock({
+                    const blocks = dataModel.value.blocks || []
+                    blocks.push(createNewBlock({
                         top: e.offsetY,
                         left: e.offsetX,
                         component: component!
                     }))
-
-                    dataModel.value = {
-                        ...dataModel.value,
-                        blocks: value
-                    }
+                    methods.updateBlocks(blocks)
+                    // dataModel.value = {
+                    //     ...dataModel.value,
+                    //     blocks: blocks
+                    // }
                 }
             }
             return blockHandler
@@ -203,6 +216,8 @@ export const VisualEditor = defineComponent({
             focusData,
             dataModel,
             updateBlocks: methods.updateBlocks,
+            dragStart,
+            dragEnd
         })
         // 操作栏按钮事件
         const buttons = [
