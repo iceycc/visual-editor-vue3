@@ -54,7 +54,10 @@ export const VisualEditor = defineComponent({
                     blocks = blocks.filter(item => item !== block)
                 }
                 blocks.forEach(block => block.focus = false)
-            }
+            },
+            updateBlocks: (blocks: VisualEditorBlockData[]) => {
+                dataModel.value = {...dataModel.value, blocks,}
+            },
         }
         //处理从菜单拖拽组件到容器的相关动作
         const menuDraggier = (() => {
@@ -196,7 +199,11 @@ export const VisualEditor = defineComponent({
             }
         })()
         // 操作
-        const commander = useVisualCommand()
+        const commander = useVisualCommand({
+            focusData,
+            dataModel,
+            updateBlocks: methods.updateBlocks,
+        })
         // 操作栏按钮事件
         const buttons = [
             {label: '撤销', icon: 'icon-back', handler: commander.undo, tip: 'ctrl+z'},
@@ -219,7 +226,7 @@ export const VisualEditor = defineComponent({
             </div>
             <div class="visual-editor-head">
                 {buttons.map((btn, index) => {
-                    return <div key={index} class="visual-editor-head-button">
+                    return <div key={index} class="visual-editor-head-button" onClick={btn.handler}>
                         <i class={`iconfont ${btn.icon}`}/>
                         <span>{btn.label}</span>
                     </div>

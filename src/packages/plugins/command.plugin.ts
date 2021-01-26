@@ -4,6 +4,7 @@ export interface CommandExecute {
     undo?: () => void,
     redo: () => void,
 }
+
 type commandTypes = 'delete' | 'undo' | 'redo'
 
 export interface Command {
@@ -17,10 +18,11 @@ export interface CommandManager {
     queue: CommandExecute[],
     current: number,
 }
+
 export function useCommander() {
     const state = reactive({
         current: -1,
-        queue: [] as CommandExecute[],
+        queue: [] as CommandExecute[], // 执行命令的队列
         commands: {} as Record<commandTypes, (...args: any[]) => void>
     })
     const registry = (command: Command) => {
@@ -30,7 +32,7 @@ export function useCommander() {
                 state.queue.push({undo, redo})
                 state.current += 1
             }
-            redo()
+            redo() // 执行命令时直接执行redo，重做命令
         }
     }
     registry({
@@ -41,6 +43,7 @@ export function useCommander() {
             // 命令执行的时候，需要做的事情
             return {
                 redo: () => {
+                    console.log('执行撤销undo', state)
                     // 将要做的事情还原
                     let {current} = state;
                     if (current === -1) return;
@@ -62,11 +65,13 @@ export function useCommander() {
         execute: () => {
             return {
                 redo: () => {
+                    console.log('执行重做redo', state)
                     let {current} = state
-                    if (!state.queue[current]) return;
-                    const {redo} = state.queue[current];
-                    redo();
-                    state.current += 1
+                    const queueItem = state.queue[current + 1] // 重做下一指针的操作
+                    if (!!queueItem) {
+                        queueItem.redo()
+                        state.current += 1
+                    }
                 }
 
             }
