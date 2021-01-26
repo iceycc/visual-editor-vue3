@@ -17,4 +17,9 @@ export function useVisualCommand() {
             }
         }
     })
+    return {
+        undo: () => commander.state.commands.undo(),
+        redo: () => commander.state.commands.redo(),
+        delete: () => commander.state.commands.delete()
+    }
 }

@@ -4,9 +4,10 @@ export interface CommandExecute {
     undo?: () => void,
     redo: () => void,
 }
+type commandTypes = 'delete' | 'undo' | 'redo'
 
 export interface Command {
-    name: string, // 命令唯一标志
+    name: commandTypes, // 命令唯一标志
     keyboard?: string | string[], // 命令监听的快捷键
     execute: (...args: any[]) => CommandExecute, // 命令被执行的时候，所做的内容
     followQueue?: boolean, // 命令执行完后，是否需要将命令执行得到的undo，redo放入队列
@@ -16,12 +17,11 @@ export interface CommandManager {
     queue: CommandExecute[],
     current: number,
 }
-
 export function useCommander() {
     const state = reactive({
         current: -1,
         queue: [] as CommandExecute[],
-        commands: {} as Record<string, (...args: any[]) => void>
+        commands: {} as Record<commandTypes, (...args: any[]) => void>
     })
     const registry = (command: Command) => {
         state.commands[command.name] = (...args) => {

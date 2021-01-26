@@ -9,6 +9,7 @@ import {
 } from './visual-editor.utils'
 import {VisualEditorBlock} from './visual-editor-block'
 import {useModel} from './utils/useModule'
+import {useVisualCommand} from './utils/visual.command'
 
 export const VisualEditor = defineComponent({
     props: {
@@ -163,6 +164,7 @@ export const VisualEditor = defineComponent({
         })();
         // 处理block在container中拖拽移动事件
         const blockDraggier = (() => {
+            // mouse事件，在移动的时候可以监听鼠标滚轮事件，比较方便
             let dragState = {
                 startX: 0,
                 startY: 0,
@@ -193,7 +195,14 @@ export const VisualEditor = defineComponent({
                 mousedown
             }
         })()
-        // mouse事件，在移动的时候可以监听鼠标滚轮事件，比较方便
+        // 操作
+        const commander = useVisualCommand()
+        // 操作栏按钮事件
+        const buttons = [
+            {label: '撤销', icon: 'icon-back', handler: commander.undo, tip: 'ctrl+z'},
+            {label: '重做', icon: 'icon-forward', handler: commander.redo, tip: 'ctrl+y, ctrl+shift+z'},
+            {label: '删除', icon: 'icon-delete', handler: () => commander.delete(), tip: 'ctrl+d, backspace, delete'},
+        ]
         return () => <div class="visual-editor">
             <div class="visual-editor-menu">
                 {!!props.config && props.config.componentList.map(component => {
@@ -209,7 +218,12 @@ export const VisualEditor = defineComponent({
                 })}
             </div>
             <div class="visual-editor-head">
-                visual-editor-head
+                {buttons.map((btn, index) => {
+                    return <div key={index} class="visual-editor-head-button">
+                        <i class={`iconfont ${btn.icon}`}/>
+                        <span>{btn.label}</span>
+                    </div>
+                })}
             </div>
             <div class="visual-editor-operator">
                 visual-editor-operator
