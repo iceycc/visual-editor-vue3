@@ -1,4 +1,5 @@
-import {reactive, onUnmounted} from 'vue'
+import {reactive} from 'vue'
+import {KeyboardCode} from './keyboard-code'
 
 export interface CommandExecute {
     undo?: () => void,
@@ -51,15 +52,49 @@ export function useCommander() {
         }
     }
 
+    const keyBoardEvent = (() => {
+        const onKeydown = (e: KeyboardEvent) => {
+            console.log(e)
+            // 某些情况下不需要处理键盘事件，比如焦点不再浏览器内
+            if (document.activeElement !== document.body) return
+
+        }
+        return () => {
+            window.addEventListener('keydown', onKeydown)
+            return () => {
+                window.removeEventListener('keydown', onKeydown)
+            }
+        }
+    })()
+
     /**
      * 初始化函数，负责初始化键盘监听事件，调用命令的初始化逻辑
      */
     const init = () => {
         const onKeydown = (e: KeyboardEvent) => {
-            // console.log('监听到键盘事件', e)
+            const {keyCode, shiftKey, altKey, ctrlKey, metaKey} = e
+            let keyString: string[] = []
+            if (ctrlKey || metaKey) keyString.push('ctrl')
+            if (shiftKey) keyString.push('shift')
+            if (altKey) keyString.push('alt')
+            keyString.push(KeyboardCode[keyCode])
+            const keyNames = keyString.join('+')
+            console.log(keyNames)
+            state.commandArray.forEach(({keyboard, name}) => {
+                if (!keyboard) {
+                    return
+                }
+                const keys = Array.isArray(keyboard) ? keyboard : [keyboard]
+                if (keys.indexOf(keyNames) > -1) {
+                    state.commands[name]()
+                    e.stopPropagation()
+                    e.preventDefault()
+                }
+            })
         }
         window.addEventListener('keydown', onKeydown)
         state.commandArray.forEach(command => !!command.init && state.destroyList.push(command.init()))
+        state.destroyList.push(keyBoardEvent())
         state.destroyList.push(() => window.removeEventListener('keydown', onKeydown))
 
     }

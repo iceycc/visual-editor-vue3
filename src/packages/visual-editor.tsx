@@ -147,7 +147,8 @@ export const VisualEditor = defineComponent({
                 container: {
                     onMousedown(e: MouseEvent) {
                         e.preventDefault();
-                        e.stopPropagation();
+                        // e.stopPropagation();??
+
                         // 点击空白清空所有block
                         methods.clearFocus();
                     }
@@ -248,10 +249,12 @@ export const VisualEditor = defineComponent({
             </div>
             <div class="visual-editor-head">
                 {buttons.map((btn, index) => {
-                    return <div key={index} class="visual-editor-head-button" onClick={btn.handler}>
-                        <i class={`iconfont ${btn.icon}`}/>
-                        <span>{btn.label}</span>
-                    </div>
+                    return <el-tooltip effect="dark" content={btn.tip} placement="bottom" key={index}>
+                        <div class="visual-editor-head-button" onClick={btn.handler}>
+                            <i class={`iconfont ${btn.icon}`}/>
+                            <span>{btn.label}</span>
+                        </div>
+                    </el-tooltip>
                 })}
             </div>
             <div class="visual-editor-operator">
