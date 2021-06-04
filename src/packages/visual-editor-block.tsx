@@ -6,7 +6,7 @@ export const VisualEditorBlock = defineComponent({
         block: {type: Object as PropType<VisualEditorBlockData>, required: true},
         config: {type: Object as PropType<VisualEditorConfig>, required: true}
     },
-    setup(props, ctx) {
+    setup(props) {
         const el = ref({} as HTMLElement)
         const styles = computed(() => (
             {

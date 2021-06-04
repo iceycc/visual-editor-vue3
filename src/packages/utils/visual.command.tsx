@@ -135,12 +135,31 @@ export function useVisualCommand(
         }
     })
 
+    commander.registry({
+        name: 'clear',
+        execute: () => {
+            const data = {
+                before: deepcopy(dataModel.value.blocks),
+                after: deepcopy([])
+            }
+            return {
+                redo: () => {
+                    updateBlocks(data.after)
+                },
+                undo: () => {
+                    updateBlocks(data.before)
+                }
+            }
+        }
+    })
+
     commander.init()
 
     return {
         undo: () => commander.state.commands.undo(),
         redo: () => commander.state.commands.redo(),
         delete: () => commander.state.commands.delete(),
-        drag: () => commander.state.commands.drag()
+        drag: () => commander.state.commands.drag(),
+        clear: () => commander.state.commands.clear()
     }
 }

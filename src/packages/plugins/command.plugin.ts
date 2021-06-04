@@ -6,7 +6,7 @@ export interface CommandExecute {
     redo: () => void,
 }
 
-type commandTypes = 'delete' | 'undo' | 'redo' | 'updateBlock' | 'add' | 'drag'
+type commandTypes = 'delete' | 'undo' | 'redo' | 'updateBlock' | 'add' | 'drag' | 'clear'
 
 export interface Command {
     name: commandTypes, // 命令唯一标志
