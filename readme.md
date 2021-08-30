@@ -7,7 +7,6 @@ vue3 + ts + element-plus
 - [ ] ~~angular~~
 
 ## 项目成果预览
-- 项目来自《珠峰架构》韦神大佬的可视化拖拽训练营，详情请私聊。
 - 内容视频介绍：[https://www.bilibili.com/video/BV1BK4y1W7Eu/](https://www.bilibili.com/video/BV1BK4y1W7Eu/)
 - Vue版本项目预览：[http://martsforever-pot.gitee.io/vue-visual-editor/](http://martsforever-pot.gitee.io/vue-visual-editor/)
 - React版本项目预览：[http://martsforever-pot.gitee.io/react-visual-editor/](http://martsforever-pot.gitee.io/react-visual-editor/)
